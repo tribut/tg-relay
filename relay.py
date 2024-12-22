@@ -32,9 +32,9 @@ async def setup():
 @client.on(events.NewMessage)
 async def my_event_handler(event):
     for chat_id, relays in RELAY_MAP.items():
-        if event.chat and event.chat.id == chat_id:
+        if event.chat_id == chat_id:
             for relay in relays:
-                logger.info('Sending message from {} to {}'.format(event.chat.id, relay))
+                logger.info('Sending message from {} to {}'.format(event.chat_id, relay))
                 if config.FORWARD:
                     await client.forward_messages(relay, event.message)
                 else:
@@ -42,7 +42,7 @@ async def my_event_handler(event):
             break
     else:
         for relay in RELAY_MAP.get('default', []):
-            logger.info('Sending message from {} to {}'.format(event.chat.id, relay))
+            logger.info('Sending message from {} to {}'.format(event.chat_id, relay))
             if config.FORWARD:
                 await client.forward_messages(relay, event.message)
             else:
